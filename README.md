@@ -74,6 +74,4 @@ I think Transfer Learning would be particularly interesting, since the main limi
 
 Some example images are available in the [test_images](test_images/) folder.
 
-## Project Report
 
-For a more detailed explanation of the dataset, model architecture, training process and results, you can check the [full project report](project_report.pdf).
