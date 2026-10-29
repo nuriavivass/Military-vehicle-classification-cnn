@@ -1,5 +1,4 @@
 """
-Nuria Vivas Sanz
 Training CNN - Military Sorter
 Original Architecture + Data Augmentation + LR Scheduler
 """
