@@ -108,8 +108,4 @@ The [`test_images/`](test_images/) directory contains sample images of military 
 - Data Augmentation
 - Satellite Imagery
 
-## Project Report
 
-A detailed explanation of the dataset, CNN architecture, training experiments, challenges, and results is available in the project report.
-
-[Read the full project report](project_report.pdf)
