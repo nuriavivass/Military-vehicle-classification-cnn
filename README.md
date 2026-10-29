@@ -2,110 +2,78 @@
 CNN-based military vehicle classification using satellite imagery and deep learning.
 
 
-# Military Vehicle Classification in Satellite Images Using CNNs
+# Military Vehicle Classification Using CNNs
 
-A deep learning project focused on classifying military vehicles from satellite imagery using a **Convolutional Neural Network (CNN)** built and trained from scratch.
+This project focuses on classifying military vehicles from satellite images using a Convolutional Neural Network (CNN) trained from scratch.
 
-The project explores the challenges of image classification with limited training data, particularly **data scarcity, overfitting, and model generalization**.
+The main goal was to explore how well a CNN could perform with a relatively small dataset, while dealing with common image classification challenges such as different viewing angles, lighting conditions and overfitting.
 
-## Project Overview
+## Dataset
 
-The objective is to develop a CNN capable of classifying military vehicles into **11 different classes**, including:
+I built my own dataset using images collected from Google Earth and websites such as Virtual Globetrotting. Finding aircraft was relatively straightforward, but collecting images of ground vehicles was more challenging, so I also used some synthetic images from Arma 3.
 
-- **Aircraft (6 classes):** F-35, MiG-29, Eurofighter, A400M, and others.
-- **Ground vehicles (5 classes):** 3 tanks, 1 artillery vehicle, and 1 armored personnel carrier.
+The dataset includes 11 different military vehicle classes: 6 aircraft and 5 ground vehicles (3 tanks, an artillery vehicle and an armored personnel carrier).
 
-The model processes RGB images resized to **120 × 120 pixels** and predicts the corresponding vehicle class.
+Initially, I had around 20 images per class, which was not enough to train a CNN properly. To increase the amount of training data, I applied data augmentation techniques such as rotations, zooming and flipping.
 
-## Dataset & Preprocessing
+All images were resized to 120 × 120 pixels.
 
-A custom dataset was created from scratch using satellite imagery collected from Google Earth and online resources such as Virtual Globetrotting.
+## Model Architecture
 
-Due to the limited availability of satellite images of military ground vehicles, some synthetic images from simulation environments such as Arma 3 were also incorporated.
-
-The original dataset contained approximately **20 images per class**.
-
-To address data scarcity, several data augmentation techniques were applied:
-
-- Random rotations
-- Horizontal and vertical flips
-- Random zoom
-- Horizontal and vertical translations
-
-An additional online augmentation pipeline was incorporated during training to improve generalization and reduce overfitting.
-
-## CNN Architecture
-
-The model consists of three convolutional blocks followed by fully connected layers.
+I designed a CNN with three convolutional blocks followed by fully connected layers.
 
 | Layer | Configuration |
 |---|---|
-| Convolutional Block 1 | Conv2D (32 filters, 3×3) + ReLU + MaxPooling |
-| Convolutional Block 2 | Conv2D (64 filters, 3×3) + ReLU + MaxPooling |
-| Convolutional Block 3 | Conv2D (128 filters, 3×3) + ReLU + MaxPooling |
-| Flatten | Flatten feature maps |
+| Conv Block 1 | Conv2D (32, 3×3) + ReLU + MaxPooling |
+| Conv Block 2 | Conv2D (64, 3×3) + ReLU + MaxPooling |
+| Conv Block 3 | Conv2D (128, 3×3) + ReLU + MaxPooling |
+| Flatten | Flatten |
 | Dense | 256 neurons + ReLU |
 | Dropout | 0.5 |
 | Output | 11 neurons + Softmax |
 
-### Training Configuration
+For training, I used the Adam optimizer and Categorical Cross-Entropy as the loss function. The dataset was split into 70% training and 30% validation.
 
-- **Optimizer:** Adam
-- **Loss Function:** Categorical Cross-Entropy
-- **Dataset Split:** 70% training / 30% validation
-- **Early Stopping:** To prevent unnecessary training
-- **Learning Rate Scheduling:** Reduction based on validation loss
+I also implemented Early Stopping and learning rate reduction based on validation loss.
+
+## Training and Challenges
+
+The main problem I faced during training was overfitting. The model was learning the training images quite well, but its performance on validation images was significantly worse.
+
+I tried different approaches, including changing the number of neurons, adjusting the learning rate and experimenting with the number of epochs.
+
+What helped the most was adding another data augmentation process directly into the training pipeline, with random rotations, translations, flips and zooming.
+
+This reduced the validation loss and improved generalization, although the difference between training and validation accuracy was still noticeable.
 
 ## Results
 
-After multiple training iterations and adjustments to the data augmentation pipeline, the model achieved the following results:
+After several experiments, the final model achieved the following results:
 
 | Metric | Training | Validation |
 |---|---|---|
 | Accuracy | 72.73% | 61.44% |
 | Loss | 1.02 | 1.26 |
 
-The model demonstrated progressive improvement in classification accuracy, reaching approximately **61–63% validation accuracy**.
+The model reached around 61–63% validation accuracy, which shows that it was able to learn useful features despite the limited amount of data.
 
-Although moderate overfitting remains, the results indicate that the CNN learned meaningful visual patterns despite the limited dataset.
+There is still some overfitting, but the results improved considerably after introducing more data augmentation.
 
-## Challenges & Lessons Learned
+## Possible Improvements
 
-One of the main challenges was achieving good generalization with a relatively small dataset.
+There are several things I would like to explore to improve the model:
 
-Initial experiments showed significant overfitting. Several approaches were explored, including:
-
-- Architectural adjustments
-- Learning rate scheduling
-- Dropout regularization
-- Early stopping
-- Additional data augmentation
-
-The most effective improvement came from introducing additional data augmentation during training, which helped reduce validation loss and narrow the generalization gap.
-
-This project provided practical experience in **CNN design, image preprocessing, model optimization, and deep learning evaluation under data constraints**.
-
-## Future Improvements
-
-Potential improvements include:
-
-- **Transfer Learning:** Fine-tuning pretrained architectures such as ResNet or VGG.
-- **Dataset Expansion:** Increasing the number and diversity of real satellite images.
+- **Transfer Learning:** Using a pretrained model such as ResNet or VGG instead of training a CNN from scratch.
+- **Larger Dataset:** Collecting more real satellite images for each vehicle class.
+- **Global Average Pooling:** Reducing the number of parameters to help prevent overfitting.
 - **Batch Normalization:** Improving training stability.
-- **Global Average Pooling:** Reducing the number of trainable parameters and limiting overfitting.
+
+I think Transfer Learning would be particularly interesting, since the main limitation of this project was the small dataset.
 
 ## Test Images
 
-The [`test_images/`](test_images/) directory contains sample images of military vehicles used to demonstrate the classification task.
+Some example images are available in the [test_images](test_images/) folder.
 
-## Technologies & Concepts
+## Project Report
 
-- Python
-- Deep Learning
-- Convolutional Neural Networks (CNNs)
-- Computer Vision
-- Image Classification
-- Data Augmentation
-- Satellite Imagery
-
-
+For a more detailed explanation of the dataset, model architecture, training process and results, you can check the [full project report](project_report.pdf).
